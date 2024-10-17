@@ -1,4 +1,4 @@
-from src.db.models import User
+from src.db.models import UserInfo, UserRating, Questions
 from src.utils.repository import SQLAlchemyRepository
 
 """
@@ -7,4 +7,12 @@ from src.utils.repository import SQLAlchemyRepository
 
 
 class UserRepository(SQLAlchemyRepository):
-    model = User
+    model = UserInfo
+
+
+class RatingRepository(SQLAlchemyRepository):
+    model = UserRating
+
+
+class QuestionsRepository(SQLAlchemyRepository):
+    model = Questions

@@ -5,7 +5,6 @@ from aiogram import F
 from aiogram.fsm.scene import SceneRegistry
 from aiogram.methods import DeleteWebhook
 from config import dp, bot
-from src.handlers.events import start_bot, stop_bot
 from src.handlers.quiz_scene import QuizScene
 from src.handlers.user_handler import user_router
 from src.utils.dependencies.user_service import user_service_fabric
@@ -13,8 +12,6 @@ import asyncio
 
 
 async def start():
-    dp.startup.register(start_bot)
-    dp.shutdown.register(stop_bot)
     dp.include_router(user_router)
     user_router.callback_query.register(QuizScene.as_handler(), F.data == 'go_quiz')
     scene_registry = SceneRegistry(dp)
