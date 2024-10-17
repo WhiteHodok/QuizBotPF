@@ -21,21 +21,21 @@ from src.db.conn import Base
 
 
 class User(Base):
-    __tablename__ = "UserData"
+    __tablename__ = "test"
 
     chat_id: Mapped[int] = mapped_column(primary_key=True)
     text: Mapped[str] = mapped_column(String(255))
 
 
 class UserInfo(Base):
-    __tablename__ = "QuizBot_UserData"
+    __tablename__ = "UserData"
 
     chat_id: Mapped[int] = mapped_column(primary_key=True)
     tg_username: Mapped[str] = mapped_column(String(255))
 
 
 class UserRating(Base):
-    __tablename__ = "QuizBot_Rating"
+    __tablename__ = "Rating"
 
     chat_id: Mapped[int] = mapped_column(primary_key=True)
     tg_username: Mapped[str] = mapped_column(String(255))
