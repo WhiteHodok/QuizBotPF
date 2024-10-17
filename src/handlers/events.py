@@ -1,20 +1,19 @@
 from aiogram.types import Message
-
-from config import bot, secrets
+from config import bot, bot_settings
 from src.phrases import START_BOT, STOP_BOT
 
 
 async def start_bot() -> None:
-    await bot.send_message(secrets.admin_id, START_BOT)
+    await bot.send_message(bot_settings.ADMIN_ID, START_BOT)
 
 
 async def stop_bot() -> None:
-    await bot.send_message(secrets.admin_id, STOP_BOT)
+    await bot.send_message(bot_settings.ADMIN_ID, STOP_BOT)
 
 
 async def error_bot(def_name: str, message, error: str) -> None:
     await bot.send_message(
-        chat_id=secrets.admin_id,
+        chat_id=bot_settings.ADMIN_ID,
         text=f'Ошибка в функции <b>{def_name}</b>: \n<code>{error}</code>',
         parse_mode='HTML'
     )
@@ -25,6 +24,6 @@ async def error_bot(def_name: str, message, error: str) -> None:
     # Отправляем части сообщения последовательно
     for part in parts:
         await bot.send_message(
-            chat_id=secrets.admin_id,
+            chat_id=bot_settings.ADMIN_ID,
             text=f'```{part}```'
         )

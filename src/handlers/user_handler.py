@@ -1,11 +1,9 @@
 import asyncio
-
 from aiogram import Router
 from aiogram.filters import CommandStart, StateFilter, Command
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message, FSInputFile
-
-from config import bot, supabase, secrets
+from config import bot, bot_settings
 from src.handlers.events import error_bot
 from src.keyboards.user_inline_keyboards import go_quiz_keyboard_maker, go_media_keyboard_maker
 from src.phrases import HELLO_TEXT, LAST_STAND_START, SPAM_ATTACK, STOP_QUIZ_THX
@@ -19,16 +17,19 @@ async def command_start(message: Message, state: FSMContext) -> None:
     try:
         tg_username = message.chat.username
         chat_id = message.from_user.id
+        #TODO
         user_data = supabase.from_("UserData").select("*").eq(
             "chat_id", chat_id
         ).execute()
         if not user_data.data:
+            #TODO
             supabase.table("UserData").insert({
                 "chat_id": chat_id,
                 "tg_username": tg_username
             }).execute()
         else:
             try:
+                #TODO
                 supabase.table("Rating").delete().eq("chat_id", chat_id).execute()
             except:
                 pass
@@ -43,9 +44,11 @@ async def command_start(message: Message, state: FSMContext) -> None:
     except Exception as e:
         await error_bot('command start', message, str(e))
 
+
 @user_router.message(StateFilter(User_state.stop_quiz))
 async def in_stop_quiz(message: Message, state: FSMContext) -> None:
     await message.answer(STOP_QUIZ_THX)
+
 
 @user_router.message(CommandStart())
 async def command_start_in_quiz(message: Message, state: FSMContext) -> None:
@@ -55,7 +58,8 @@ async def command_start_in_quiz(message: Message, state: FSMContext) -> None:
 @user_router.message(Command('spam_attack'))
 async def spam_attack(message: Message, state: FSMContext) -> None:
     chat_id = message.chat.id
-    if secrets.admin_id == chat_id:
+    if bot_settings.ADMIN_ID == chat_id:
+        #TODO
         user_data = supabase.from_("UserData").select("*").execute()
         counter = 0
         list_len = len(user_data.data)
@@ -72,11 +76,8 @@ async def spam_attack(message: Message, state: FSMContext) -> None:
                     photo=FSInputFile(file_path)
                 )
                 await state.set_state(User_state.stop_quiz)
-                await bot.send_message(chat_id=chat_id, text=f"({counter}/{list_len}) {user['chat_id']} - сообщение успешно отправлено")
+                await bot.send_message(chat_id=chat_id,
+                                       text=f"({counter}/{list_len}) {user['chat_id']} - сообщение успешно отправлено")
             except Exception as e:
                 await bot.send_message(chat_id=chat_id, text=f"({counter}/{list_len}) {user['chat_id']} - {e}")
         await bot.send_message(chat_id=chat_id, text='Спам атака завершена')
-
-
-
-

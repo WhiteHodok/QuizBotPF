@@ -1,12 +1,10 @@
 from typing import Any
 import random
-
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.scene import Scene, on
 from aiogram.types import Message, PollAnswer, CallbackQuery, FSInputFile
-
-from config import bot, supabase
+from config import bot
 from src.handlers.events import error_bot
 from src.handlers.user_handler import command_start
 from src.keyboards.user_inline_keyboards import go_media_keyboard_maker
@@ -35,7 +33,7 @@ class QuizScene(Scene, state="quiz"):
                     message_id=event_data.message.message_id,
                     text=QUIZ_START_TEXT,
                     reply_markup=None)
-
+#TODO
             question_info = supabase.from_("Questions").select("*").eq(
                 "num", step
             ).execute()
@@ -62,6 +60,7 @@ class QuizScene(Scene, state="quiz"):
                 )
 
             else:
+                #TODO
                 supabase.table("Rating").insert({
                     "chat_id": chat_id,
                     "tg_username": event_data.user.username,
@@ -69,6 +68,7 @@ class QuizScene(Scene, state="quiz"):
                 }).execute()
 
                 user_rating = correct_answer_count
+                #TODO
                 all_results = supabase.table("Rating").select("rating").execute()
                 total_users = len(all_results.data)
 
@@ -101,6 +101,7 @@ class QuizScene(Scene, state="quiz"):
             step = data["step"]
             answer_list = data["answer_list"]
             correct_answer_count = data["correct_answer_count"]
+            #TODO
             question_info = supabase.from_("Questions").select("variants").eq(
                 "num", step
             ).execute()
@@ -118,6 +119,7 @@ class QuizScene(Scene, state="quiz"):
     async def bug_help(self, message: Message, state: FSMContext) -> None:
         await state.clear()
         await message.answer('Бот перезагружен')
+        #TODO
         supabase.table("Rating").delete().eq("chat_id", message.chat.id).execute()
         await command_start(message, state)
         

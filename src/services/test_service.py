@@ -1,5 +1,5 @@
 from src.repo.repositories import UserRepository
-from src.schemas.test_schema import UserCreate
+from src.schemas.test_schema import UserCreate, User, Rating
 from src.utils.repository import AbstractRepository
 
 """
@@ -8,6 +8,7 @@ from src.utils.repository import AbstractRepository
 
 
 class UserService:
+    #TODO
 
     def __init__(self, repo: AbstractRepository):
         self.repo = repo
