@@ -28,14 +28,14 @@ class User(Base):
 
 
 class UserInfo(Base):
-    __tablename__ = "UserData"
+    __tablename__ = "QuizBot_UserData"
 
     chat_id: Mapped[int] = mapped_column(primary_key=True)
     tg_username: Mapped[str] = mapped_column(String(255))
 
 
 class UserRating(Base):
-    __tablename__ = "Rating"
+    __tablename__ = "QuizBot_Rating"
 
     chat_id: Mapped[int] = mapped_column(primary_key=True)
     tg_username: Mapped[str] = mapped_column(String(255))
